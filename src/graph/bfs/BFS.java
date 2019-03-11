@@ -9,7 +9,8 @@ public class BFS {
 	private static GraphInterface graph;
 	
 	private ArrayList<Integer> coda;
-	boolean[] scoperti;
+	private boolean[] scoperti;
+	private int[] distanza;
 	private ArrayList<Integer> risultato;
 	
 	public BFS(GraphInterface g) {
@@ -24,6 +25,8 @@ public class BFS {
 		coda.add(sorgente);
 		scoperti[sorgente] = true;
 		risultato.add(sorgente);
+		// inizializza la distanza della sorgente
+		distanza[sorgente] = 0;
 		
 		while(!coda.isEmpty()) {
 			int tmp = coda.remove(0);
@@ -32,6 +35,8 @@ public class BFS {
 					coda.add(e);
 					scoperti[e] = true;
 					risultato.add(e);
+					// la distanza di e è la distanza di tmp +1
+					distanza[e] = distanza[tmp] + 1;
 				}
 			}
 		}
@@ -43,6 +48,12 @@ public class BFS {
 	}
 	
 	private void reInit() {
+		// inizializzo l'array delle distanze a -1
+		distanza = new int[graph.getOrder()];
+		for(int i = 0;i<graph.getOrder();i++) {
+			distanza[i] = -1;
+		}
+		
 		scoperti = new boolean[graph.getOrder()];
 		for(int i = 0;i<graph.getOrder();i++) {
 			scoperti[i] = false;
@@ -50,5 +61,9 @@ public class BFS {
 		
 		risultato = new ArrayList<Integer>(graph.getOrder());
 		coda = new ArrayList<Integer>(graph.getOrder());
+	}
+	
+	public int[] getDistance(int sorgente) {
+		
 	}
 }
