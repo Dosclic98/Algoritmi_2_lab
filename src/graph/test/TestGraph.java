@@ -2,10 +2,13 @@ package graph.test;
 
 import static org.junit.Assert.*;
 
+import java.util.Iterator;
+
 import org.junit.Test;
 
 import graph.bfs.BFS;
 import it.uniupo.graphLib.DirectedGraph;
+import it.uniupo.graphLib.Edge;
 import it.uniupo.graphLib.GraphInterface;
 import it.uniupo.graphLib.UndirectedGraph;
 
@@ -70,5 +73,38 @@ public class TestGraph {
 		assertTrue(bfsTest.getNodesInOrderOfVisit(1).get(2) != 0);
 		assertTrue(bfsTest.getNodesInOrderOfVisit(0).get(2) != 3);
 	}
-
+/*	
+	@Test
+	public void testDimensioneAlbero() {
+		GraphInterface grafo = new UndirectedGraph("4;0 2;0 1;2 3;1 3");
+		BFS bfsTest = new BFS(grafo);
+		
+		GraphInterface tree = bfsTest.bfsTree(0);
+		assertEquals(3,tree.getEdgeNum());
+	}
+*/
+	@Test
+	public void testArchiAlbero() {
+		GraphInterface grafo = new UndirectedGraph("4;2 0;2 3;0 1;3 1");
+		BFS bfsTest = new BFS(grafo);
+		
+		GraphInterface tree = bfsTest.bfsTree(2);
+		//Iterator edges = tree.getOutEdges(2).iterator();
+		
+		//Edge e = (Edge) edges.next();
+		//assertTrue(e.equals(new Edge(2,0)) || e.equals(new Edge(2,3)));
+		//System.out.println(e.toString());
+		//e = (Edge) edges.next();
+		//assertTrue(e.equals(new Edge(2,0)) || e.equals(new Edge(2,3)));
+		//System.out.println(e.toString());
+		for(Edge tm:tree.getOutEdges(2)) {
+			// System.out.println(tm.toString());
+		}
+		
+		
+		/*e = (Edge) edges.next();
+		assertTrue( (e.equals(new Edge(0,1)) && !e.equals(new Edge(1,3))) ||
+				    (e.equals(new Edge(1,3)) && !e.equals(new Edge(0,1))) );*/
+	}
+	
 }
