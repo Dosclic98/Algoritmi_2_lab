@@ -70,5 +70,50 @@ public class TestGraph {
 		assertTrue(bfsTest.getNodesInOrderOfVisit(1).get(2) != 0);
 		assertTrue(bfsTest.getNodesInOrderOfVisit(0).get(2) != 3);
 	}
+	
+	@Test
+	public void testInitDistanzaUno() {
+		GraphInterface grafo = new UndirectedGraph(1);
+		BFS bfsTest = new BFS(grafo);
+		int[] test = bfsTest.getDistance(0);
+		assertEquals(0,test[0]);
+	}
 
+	@Test
+	public void testInitDistanzaDue() {
+		GraphInterface grafo = new UndirectedGraph("2;0 1");
+		BFS bfsTest = new BFS(grafo);
+		int[] test = bfsTest.getDistance(0);
+		assertEquals(0,test[0]);
+		assertEquals(1,test[1]);
+	}
+
+	@Test
+	public void testInitDistanzaQuattro() {
+		GraphInterface grafo = new UndirectedGraph("4;0 1;0 2;1 3;2 3");
+		BFS bfsTest = new BFS(grafo);
+		int[] test = bfsTest.getDistance(2);
+		assertEquals(0,test[2]);
+		assertEquals(1,test[0]);
+		assertEquals(1,test[3]);
+		assertEquals(2,test[1]);
+
+		int[] test1 = bfsTest.getDistance(0);
+		assertEquals(1,test1[2]);
+		assertEquals(0,test1[0]);
+		assertEquals(2,test1[3]);
+		assertEquals(1,test1[1]);		
+	}
+	
+	@Test
+	public void testInit() {
+		GraphInterface grafo = new UndirectedGraph(4);
+		BFS bfsTest = new BFS(grafo);
+		int[] test = bfsTest.getDistance(0);
+		assertEquals(-1,test[2]);
+		assertEquals(0,test[0]);
+		assertEquals(-1,test[3]);
+		assertEquals(-1,test[1]);				
+		
+	}
 }

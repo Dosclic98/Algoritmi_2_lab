@@ -37,6 +37,7 @@ public class BFS {
 					risultato.add(e);
 					// la distanza di e è la distanza di tmp +1
 					distanza[e] = distanza[tmp] + 1;
+					// System.out.println("distanza di " + e + " = " + distanza[e]);
 				}
 			}
 		}
@@ -64,6 +65,7 @@ public class BFS {
 	}
 	
 	public int[] getDistance(int sorgente) {
-		
+		ArrayList<Integer> unused = getNodesInOrderOfVisit(sorgente);
+		return distanza;
 	}
 }
