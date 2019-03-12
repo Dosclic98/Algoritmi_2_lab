@@ -61,9 +61,6 @@ public class BFS {
 					// la add edge non aggiunge l arco (0,1)
 					// anche se effettivamente viene fatto il tentativo
 					tree.addEdge(tm);
-					for(Edge tml:tree.getOutEdges(2)) {
-						System.out.println(tml.toString());
-					}		
 				}
 			}
 		}

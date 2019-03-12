@@ -89,22 +89,48 @@ public class TestGraph {
 		BFS bfsTest = new BFS(grafo);
 		
 		GraphInterface tree = bfsTest.bfsTree(2);
-		//Iterator edges = tree.getOutEdges(2).iterator();
+		Iterator<Edge> edges = tree.getOutEdges(2).iterator();
 		
-		//Edge e = (Edge) edges.next();
-		//assertTrue(e.equals(new Edge(2,0)) || e.equals(new Edge(2,3)));
+		Edge e = (Edge) edges.next();
+		Edge e1;
+		assertTrue(e.equals(new Edge(2,0)) || e.equals(new Edge(2,3)));
 		//System.out.println(e.toString());
-		//e = (Edge) edges.next();
-		//assertTrue(e.equals(new Edge(2,0)) || e.equals(new Edge(2,3)));
+		e = (Edge) edges.next();
+		assertTrue(e.equals(new Edge(2,0)) || e.equals(new Edge(2,3)));
 		//System.out.println(e.toString());
-		for(Edge tm:tree.getOutEdges(2)) {
-			// System.out.println(tm.toString());
-		}
 		
-		
-		/*e = (Edge) edges.next();
-		assertTrue( (e.equals(new Edge(0,1)) && !e.equals(new Edge(1,3))) ||
-				    (e.equals(new Edge(1,3)) && !e.equals(new Edge(0,1))) );*/
+		edges = tree.getOutEdges(0).iterator();
+		e = (Edge) edges.next();
+		e1 = (Edge) edges.next();
+		assertTrue( (e.equals(new Edge(0,1)) && e1.equals(new Edge(0,2))) ||
+				    (e.equals(new Edge(0,2)) && e1.equals(new Edge(0,1))) );
 	}
 	
+	@Test
+	public void testInitAlbero() {
+		GraphInterface grafo = new UndirectedGraph("4;2 0;2 3;0 1;3 1");
+		BFS bfsTest = new BFS(grafo);
+		
+		GraphInterface tree = bfsTest.bfsTree(2);
+		Iterator<Edge> edges = tree.getOutEdges(2).iterator();
+		
+		Edge e = (Edge) edges.next();
+		assertTrue(e.equals(new Edge(2,0)) || e.equals(new Edge(2,3)));
+		//System.out.println(e.toString());
+		e = (Edge) edges.next();
+		assertTrue(e.equals(new Edge(2,0)) || e.equals(new Edge(2,3)));
+		
+		tree = bfsTest.bfsTree(2);
+		edges = tree.getOutEdges(2).iterator();
+		
+		e = (Edge) edges.next();
+		assertTrue(e.equals(new Edge(2,0)) && !e.equals(new Edge(2,3)) ||
+				  (e = (Edge) edges.next()).equals(new Edge(2,3)) && !e.equals(new Edge(2,0)));
+		
+		tree = bfsTest.bfsTree(2);
+		assertEquals(3,tree.getEdgeNum());
+		tree = bfsTest.bfsTree(1);
+		assertEquals(3,tree.getEdgeNum());
+
+	}
 }
