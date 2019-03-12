@@ -12,6 +12,7 @@ public class BFS {
 	private ArrayList<Integer> coda;
 	boolean[] scoperti;
 	private ArrayList<Integer> risultato;
+	private int[] order;
 	
 	public BFS(GraphInterface g) {
 		// inizializzo l'array degli scoperti
@@ -66,6 +67,31 @@ public class BFS {
 		}
 		return tree;
 	}
+
+	public int[] getOrderOfVisit(int sorgente){
+		reInit();
+		
+		coda.add(sorgente);
+		scoperti[sorgente] = true;
+		risultato.add(sorgente);
+		GraphInterface tree = graph.create();
+		order[sorgente] = 0;
+		int cur = 0;
+		
+		while(!coda.isEmpty()) {
+			int tmp = coda.remove(0);
+			for(Integer e:graph.getNeighbors(tmp)) {
+				if(!discovered(e.intValue())) {
+					coda.add(e);
+					scoperti[e] = true;
+					risultato.add(e);
+					order[e] = cur + 1;
+					cur++;
+				}
+			}
+		}
+		return order;
+	}
 	
 	private boolean discovered(int elem) {
 		return scoperti[elem];
@@ -76,7 +102,7 @@ public class BFS {
 		for(int i = 0;i<graph.getOrder();i++) {
 			scoperti[i] = false;
 		}
-		
+		order = new int[graph.getOrder()];
 		risultato = new ArrayList<Integer>(graph.getOrder());
 		coda = new ArrayList<Integer>(graph.getOrder());
 	}

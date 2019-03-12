@@ -133,4 +133,16 @@ public class TestGraph {
 		assertEquals(3,tree.getEdgeNum());
 
 	}
+	
+	@Test
+	public void testOrderVisit() {
+		GraphInterface grafo = new UndirectedGraph("4;2 0;2 3;0 1;3 1");
+		BFS bfsTest = new BFS(grafo);
+		int[] order = bfsTest.getOrderOfVisit(2);
+		
+		assertEquals(1,order[0]);
+		assertEquals(3,order[1]);
+		assertEquals(0,order[2]);
+		assertEquals(2,order[3]);
+	}
 }
