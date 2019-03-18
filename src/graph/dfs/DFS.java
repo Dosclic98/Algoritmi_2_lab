@@ -1,18 +1,16 @@
 package graph.dfs;
 
+
 import java.util.ArrayList;
 
-import it.uniupo.graphLib.Edge;
 import it.uniupo.graphLib.GraphInterface;
 
 public class DFS {
 	
 	private static GraphInterface graph;
 	private GraphInterface tree;
-	
-	private ArrayList<Integer> coda;
 	boolean[] scoperti;
-	private ArrayList<Integer> risultato;
+	ArrayList<Integer> finiti;
 
 	
 	public DFS(GraphInterface g) {
@@ -29,13 +27,41 @@ public class DFS {
 				dfsVisit(e);
 			}
 		}
+		finiti.add(sorg);
 	}
 	
-	public GraphInterface getTree(int sorg) {
+	public GraphInterface getTree(int sorg) throws NotAllNodesReachedException {
+		if(sorg >= graph.getOrder() || sorg < 0) throw new java.lang.IllegalArgumentException();
 		reInit();
 		dfsVisit(sorg);
+		for(int i = 0;i<graph.getOrder();i++) {
+			if(!scoperti[i]) throw new NotAllNodesReachedException(); 
+		}
 		return tree;
 	}
+	
+	public ArrayList<Integer> getNodesInOrderPostVisit(int sorg) throws NotAllNodesReachedException{
+		if(sorg >= graph.getOrder() || sorg < 0) throw new java.lang.IllegalArgumentException();
+		reInit();
+		dfsVisit(sorg);
+		for(int i = 0;i<graph.getOrder();i++) {
+			if(!scoperti[i]) throw new NotAllNodesReachedException(); 
+		}
+		return finiti;
+	} 
+	
+	public GraphInterface getForest() throws NotAllNodesReachedException{
+		reInit();
+		for(int i = 0;i<graph.getOrder();i++) {
+			if(i >= graph.getOrder() || i < 0) throw new java.lang.IllegalArgumentException();
+			if(scoperti[i] == false) dfsVisit(i);
+		}
+		for(int i = 0;i<graph.getOrder();i++) {
+			if(!scoperti[i]) throw new NotAllNodesReachedException(); 
+		}
+		return tree;
+
+	} 
 	
 	private boolean discovered(int elem) {
 		return scoperti[elem];
@@ -46,8 +72,7 @@ public class DFS {
 		for(int i = 0;i<graph.getOrder();i++) {
 			scoperti[i] = false;
 		}
-		risultato = new ArrayList<Integer>(graph.getOrder());
-		coda = new ArrayList<Integer>(graph.getOrder());
+		finiti = new ArrayList<Integer>(graph.getOrder());
 		tree = graph.create();
 	}
 }
