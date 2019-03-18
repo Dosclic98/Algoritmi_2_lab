@@ -21,9 +21,20 @@ public class DFS {
 		reInit();
 	}
 	
-	private GraphInterface dfsVisit(int sorg) {
+	private void dfsVisit(int sorg) {
 		scoperti[sorg] = true;
-		for(graph.)
+		for(Integer e:graph.getNeighbors(sorg)) {
+			if(!discovered(e.intValue())) {
+				tree.addEdge(sorg, e);
+				dfsVisit(e);
+			}
+		}
+	}
+	
+	public GraphInterface getTree(int sorg) {
+		reInit();
+		dfsVisit(sorg);
+		return tree;
 	}
 	
 	private boolean discovered(int elem) {
