@@ -74,7 +74,6 @@ public class BFS {
 		coda.add(sorgente);
 		scoperti[sorgente] = true;
 		risultato.add(sorgente);
-		GraphInterface tree = graph.create();
 		order[sorgente] = 0;
 		int cur = 0;
 		

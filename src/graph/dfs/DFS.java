@@ -10,7 +10,8 @@ public class DFS {
 	private static GraphInterface graph;
 	private GraphInterface tree;
 	boolean[] scoperti;
-	ArrayList<Integer> finiti;
+	private ArrayList<Integer> risultato;
+	private ArrayList<Integer> finiti;
 
 	
 	public DFS(GraphInterface g) {
@@ -21,6 +22,7 @@ public class DFS {
 	
 	private void dfsVisit(int sorg) {
 		scoperti[sorg] = true;
+		risultato.add(sorg);
 		for(Integer e:graph.getNeighbors(sorg)) {
 			if(!discovered(e.intValue())) {
 				tree.addEdge(sorg, e);
@@ -61,6 +63,13 @@ public class DFS {
 		}
 		return tree;
 
+	}
+	
+	public ArrayList<Integer> getNodesInOrderOfVisit(int sorg){
+		if(sorg >= graph.getOrder() || sorg < 0) throw new java.lang.IllegalArgumentException();
+		reInit();
+		dfsVisit(sorg);
+		return risultato;
 	} 
 	
 	private boolean discovered(int elem) {
@@ -73,6 +82,28 @@ public class DFS {
 			scoperti[i] = false;
 		}
 		finiti = new ArrayList<Integer>(graph.getOrder());
+		risultato = new ArrayList<Integer>(graph.getOrder());
 		tree = graph.create();
 	}
+	
+	public int[] getOrderOfVisit(int sorg) {
+		if(sorg >= graph.getOrder() || sorg < 0) throw new java.lang.IllegalArgumentException();
+		ArrayList<Integer> visit = getNodesInOrderOfVisit(sorg);
+		int[] order = new int[visit.size()];
+		for(int i = 0;i<visit.size();i++) {
+			order[visit.get(i)] = i;
+		}
+		return order;
+	}
+	
+	public int[] getOrderPostVisit(int sorg) throws NotAllNodesReachedException {
+		if(sorg >= graph.getOrder() || sorg < 0) throw new java.lang.IllegalArgumentException();
+		ArrayList<Integer> visit = getNodesInOrderPostVisit(sorg);
+		int[] order = new int[visit.size()];
+		for(int i = 0;i<visit.size();i++) {
+			order[visit.get(i)] = i;
+		}
+		return order;
+	}
+	
 }
