@@ -162,4 +162,64 @@ public class TestGraph {
 				&& order[2] == 3);
 	}
 	
+	@Test
+	public void testHasCycle() {
+		GraphInterface grafo = new DirectedGraph("1");
+		DFS dfsTest = new DFS(grafo);
+		assertFalse(dfsTest.hasDirCycle());
+		
+		grafo = new DirectedGraph("2;0 1");
+		dfsTest = new DFS(grafo);
+		assertFalse(dfsTest.hasDirCycle());
+		
+		grafo = new DirectedGraph("3;1 0;1 2;0 2");
+		dfsTest = new DFS(grafo);
+		assertFalse(dfsTest.hasDirCycle());
+		
+		grafo = new DirectedGraph("3;0 2;2 1;1 0");
+		dfsTest = new DFS(grafo);
+		assertTrue(dfsTest.hasDirCycle());		
+		
+		grafo = new DirectedGraph("5;2 3;3 4;4 2;4 1;4 0");
+		dfsTest = new DFS(grafo);
+		assertTrue(dfsTest.hasDirCycle());		
+		
+	}
+	
+	@Test
+	public void testBuildingCycle() {
+		GraphInterface grafo = new DirectedGraph("3;0 2;2 1;1 0");
+		DFS dfsTest = new DFS(grafo);
+		assertEquals(3,dfsTest.getDirCycle().size());		
+
+		grafo = new DirectedGraph("2;0 1");
+		dfsTest = new DFS(grafo);
+		assertTrue(dfsTest.getDirCycle() == null);
+
+		grafo = new DirectedGraph("1");
+		dfsTest = new DFS(grafo);
+		assertTrue(dfsTest.getDirCycle() == null);
+		
+		grafo = new DirectedGraph("5;2 3;3 4;4 2;4 1;4 0");
+		dfsTest = new DFS(grafo);
+		assertEquals(3,dfsTest.getDirCycle().size());		
+		
+	}
+	
+	@Test
+	public void testIsConnected() {
+		GraphInterface grafo = new UndirectedGraph("2");
+		DFS dfsTest = new DFS(grafo);
+		assertFalse(dfsTest.isConnected());
+		
+		grafo = new UndirectedGraph("2;0 1");
+		dfsTest = new DFS(grafo);
+		assertTrue(dfsTest.isConnected());
+		
+		grafo = new UndirectedGraph("1");
+		dfsTest = new DFS(grafo);
+		assertTrue(dfsTest.isConnected());
+		
+	}
+	
 }

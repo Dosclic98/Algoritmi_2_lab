@@ -10,8 +10,12 @@ public class DFS {
 	private static GraphInterface graph;
 	private GraphInterface tree;
 	boolean[] scoperti;
+	boolean[] terminati;
 	private ArrayList<Integer> risultato;
 	private ArrayList<Integer> finiti;
+	private int[] padre;
+	int lastVisited;
+	int arcInd;
 
 	
 	public DFS(GraphInterface g) {
@@ -81,6 +85,15 @@ public class DFS {
 		for(int i = 0;i<graph.getOrder();i++) {
 			scoperti[i] = false;
 		}
+		terminati = new boolean[graph.getOrder()];
+		for(int i = 0;i<graph.getOrder();i++) {
+			terminati[i] = false;
+		}
+		padre = new int[graph.getOrder()];
+		for(int i = 0;i<graph.getOrder();i++) {
+			padre[i] = -1;
+		}
+		
 		finiti = new ArrayList<Integer>(graph.getOrder());
 		risultato = new ArrayList<Integer>(graph.getOrder());
 		tree = graph.create();
@@ -105,5 +118,68 @@ public class DFS {
 		}
 		return order;
 	}
+
+	public boolean hasDirCycle(){
+		reInit();
+		boolean cycle = false;
+		for(int i = 0;i<graph.getOrder();i++) {
+			if(i >= graph.getOrder() || i < 0) throw new java.lang.IllegalArgumentException();
+			if(scoperti[i] == false) cycle = dfsVisitCycle(i);
+			if(cycle) return true;
+		}
+		return false;
+	}
 	
+	private boolean dfsVisitCycle(int sorg) {
+		scoperti[sorg] = true;
+		risultato.add(sorg);
+		boolean cycle = false;
+		for(Integer e:graph.getNeighbors(sorg)) {
+			if(!discovered(e.intValue())) {
+				padre[e] = sorg;
+				cycle = dfsVisitCycle(e);
+			}
+			else if(discovered(e.intValue()) && terminati[e] == false){
+				lastVisited = sorg;
+				arcInd = e;
+				cycle = true;
+			}
+		}
+		terminati[sorg] = true;
+		return cycle;
+	}
+	
+	public ArrayList<Integer> getDirCycle(){
+		reInit();
+		boolean cycle = false;
+		for(int i = 0;i<graph.getOrder();i++) {
+			if(i >= graph.getOrder() || i < 0) throw new java.lang.IllegalArgumentException();
+			if(scoperti[i] == false) cycle = dfsVisitCycle(i);
+			if(cycle) return buildCycle();
+		}
+		return null;		
+	}
+
+	private ArrayList<Integer> buildCycle() {
+		ArrayList<Integer> cycle = new ArrayList<Integer>(graph.getOrder());
+		int start = lastVisited;
+		cycle.add(start);
+		while(start != arcInd) { 
+			start = padre[start];
+			cycle.add(padre[start]);
+		}
+		return cycle;
+	}
+	
+	public boolean isConnected() {
+		for(int i = 0;i < graph.getOrder();i++) {
+			reInit();
+			dfsVisit(i);
+			for(int j = 0;j < graph.getOrder();j++) {
+				if(!scoperti[j]) return false;
+			}
+		}
+		return true;
+		
+	}
 }

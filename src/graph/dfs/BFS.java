@@ -13,6 +13,7 @@ public class BFS {
 	boolean[] scoperti;
 	private ArrayList<Integer> risultato;
 	private int[] order;
+	private int[] padre;
 	
 	public BFS(GraphInterface g) {
 		// inizializzo l'array degli scoperti
@@ -95,7 +96,55 @@ public class BFS {
 	private boolean discovered(int elem) {
 		return scoperti[elem];
 	}
-	
+
+	private void initPadre(int sorg) {
+		reInit();
+		
+		padre = new int[graph.getOrder()];
+		for(int i = 0;i<graph.getOrder();i++) {
+			padre[i] = -1;
+		}
+
+		coda.add(sorg);
+		scoperti[sorg] = true;
+		risultato.add(sorg);
+		
+		
+		while(!coda.isEmpty()) {
+			int tmp = coda.remove(0);
+			for(Integer e:graph.getNeighbors(tmp)) {
+				if(!discovered(e.intValue())) {
+					coda.add(e);
+					scoperti[e] = true;
+					risultato.add(e);
+					padre[e] = tmp;
+				}
+			}
+		}		
+	}
+/*	
+	private boolean hashDirCyclePriv(int sorg) {
+		reInit();
+		
+		coda.add(sorgente);
+		scoperti[sorgente] = true;
+		risultato.add(sorgente);
+		
+		
+		while(!coda.isEmpty()) {
+			int tmp = coda.remove(0);
+			for(Integer e:graph.getNeighbors(tmp)) {
+				if(!discovered(e.intValue())) {
+					coda.add(e);
+					scoperti[e] = true;
+					risultato.add(e);
+				}
+			}
+		}
+		return risultato;
+		
+	}	
+*/	
 	private void reInit() {
 		scoperti = new boolean[graph.getOrder()];
 		for(int i = 0;i<graph.getOrder();i++) {
