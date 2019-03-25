@@ -13,7 +13,7 @@ public class BFS {
 	boolean[] scoperti;
 	private ArrayList<Integer> risultato;
 	private int[] order;
-	private int[] padre;
+	private ArrayList<ArrayList<Integer>> conComps;
 	
 	public BFS(GraphInterface g) {
 		// inizializzo l'array degli scoperti
@@ -24,6 +24,27 @@ public class BFS {
 	public ArrayList<Integer> getNodesInOrderOfVisit(int sorgente){
 		reInit();
 		
+		coda.add(sorgente);
+		scoperti[sorgente] = true;
+		ArrayList<Integer> result = new ArrayList<Integer>(graph.getOrder());
+		result.add(sorgente);
+		
+		
+		while(!coda.isEmpty()) {
+			int tmp = coda.remove(0);
+			for(Integer e:graph.getNeighbors(tmp)) {
+				if(!discovered(e.intValue())) {
+					coda.add(e);
+					scoperti[e] = true;
+					result.add(e);
+				}
+			}
+		}
+		return result;
+	}
+
+	public ArrayList<Integer> getNodesInOrderOfVisitComponent(int sorgente){
+		reInitComp();
 		coda.add(sorgente);
 		scoperti[sorgente] = true;
 		risultato.add(sorgente);
@@ -41,7 +62,7 @@ public class BFS {
 		}
 		return risultato;
 	}
-
+	
 	public GraphInterface bfsTree(int sorgente){
 		reInit();
 		
@@ -96,7 +117,7 @@ public class BFS {
 	private boolean discovered(int elem) {
 		return scoperti[elem];
 	}
-
+/*
 	private void initPadre(int sorg) {
 		reInit();
 		
@@ -122,34 +143,28 @@ public class BFS {
 			}
 		}		
 	}
-/*	
-	private boolean hashDirCyclePriv(int sorg) {
+*/
+	public ArrayList<ArrayList<Integer>> getConnectedComponent() {
 		reInit();
-		
-		coda.add(sorgente);
-		scoperti[sorgente] = true;
-		risultato.add(sorgente);
-		
-		
-		while(!coda.isEmpty()) {
-			int tmp = coda.remove(0);
-			for(Integer e:graph.getNeighbors(tmp)) {
-				if(!discovered(e.intValue())) {
-					coda.add(e);
-					scoperti[e] = true;
-					risultato.add(e);
-				}
+		for(int i = 0;i < graph.getOrder();i++) {
+			if(scoperti[i] == false) {
+				conComps.add(getNodesInOrderOfVisitComponent(i));
 			}
 		}
-		return risultato;
-		
-	}	
-*/	
+		return conComps;
+	}
+
+	private void reInitComp() {
+		risultato = new ArrayList<Integer>(graph.getOrder());
+		coda = new ArrayList<Integer>(graph.getOrder());
+	}
+	
 	private void reInit() {
 		scoperti = new boolean[graph.getOrder()];
 		for(int i = 0;i<graph.getOrder();i++) {
 			scoperti[i] = false;
 		}
+		conComps = new ArrayList<ArrayList<Integer>>(graph.getOrder());
 		order = new int[graph.getOrder()];
 		risultato = new ArrayList<Integer>(graph.getOrder());
 		coda = new ArrayList<Integer>(graph.getOrder());

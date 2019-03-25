@@ -148,6 +148,25 @@ public class DFS {
 		terminati[sorg] = true;
 		return cycle;
 	}
+
+	private boolean dfsVisitCycleUn(int sorg) {
+		scoperti[sorg] = true;
+		risultato.add(sorg);
+		boolean cycle = false;
+		for(Integer e:graph.getNeighbors(sorg)) {
+			if(!discovered(e.intValue())) {
+				padre[e] = sorg;
+				cycle = dfsVisitCycleUn(e);
+			}
+			else if(discovered(e.intValue()) && terminati[e] == false && e != padre[sorg]){
+				lastVisited = sorg;
+				arcInd = e;
+				cycle = true;
+			}
+		}
+		terminati[sorg] = true;
+		return cycle;
+	}
 	
 	public ArrayList<Integer> getDirCycle(){
 		reInit();
@@ -160,6 +179,17 @@ public class DFS {
 		return null;		
 	}
 
+	public ArrayList<Integer> getUndirCycle(){
+		reInit();
+		boolean cycle = false;
+		for(int i = 0;i<graph.getOrder();i++) {
+			if(i >= graph.getOrder() || i < 0) throw new java.lang.IllegalArgumentException();
+			if(scoperti[i] == false) cycle = dfsVisitCycleUn(i);
+			if(cycle) return buildCycle();
+		}
+		return null;		
+	}
+	
 	private ArrayList<Integer> buildCycle() {
 		ArrayList<Integer> cycle = new ArrayList<Integer>(graph.getOrder());
 		int start = lastVisited;
@@ -169,6 +199,17 @@ public class DFS {
 			cycle.add(padre[start]);
 		}
 		return cycle;
+	}
+	
+	public boolean hasUndirectedCycle() {
+		reInit();
+		boolean cycle = false;
+		for(int i = 0;i<graph.getOrder();i++) {
+			if(i >= graph.getOrder() || i < 0) throw new java.lang.IllegalArgumentException();
+			if(scoperti[i] == false) cycle = dfsVisitCycleUn(i);
+			if(cycle) return true;
+		}
+		return false;		
 	}
 	
 	public boolean isConnected() {

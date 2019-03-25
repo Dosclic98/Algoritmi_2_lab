@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
+import graph.dfs.BFS;
 import graph.dfs.DFS;
 import graph.dfs.NotAllNodesReachedException;
 import it.uniupo.graphLib.DirectedGraph;
@@ -222,4 +223,50 @@ public class TestGraph {
 		
 	}
 	
+	@Test
+	public void testConComps() {
+		GraphInterface grafo = new UndirectedGraph("2");
+		BFS bfsTest = new BFS(grafo);
+		assertEquals(2,bfsTest.getConnectedComponent().size());
+
+		grafo = new UndirectedGraph("1");
+		bfsTest = new BFS(grafo);
+		assertEquals(1,bfsTest.getConnectedComponent().size());		
+		
+		grafo = new UndirectedGraph("2;0 1");
+		bfsTest = new BFS(grafo);
+		assertEquals(1,bfsTest.getConnectedComponent().size());
+
+		grafo = new UndirectedGraph("4;0 1;2 3");
+		bfsTest = new BFS(grafo);
+		assertEquals(2,bfsTest.getConnectedComponent().size());
+	
+	}
+	
+	@Test
+	public void testHasUndirCycle() {
+		GraphInterface grafo = new UndirectedGraph("1");
+		DFS dfsTest = new DFS(grafo);
+		assertFalse(dfsTest.hasUndirectedCycle());
+		
+		grafo = new UndirectedGraph("3;0 1;1 2;2 0");
+		dfsTest = new DFS(grafo);
+		assertTrue(dfsTest.hasUndirectedCycle());
+
+		grafo = new UndirectedGraph("2;0 1");
+		dfsTest = new DFS(grafo);
+		assertFalse(dfsTest.hasUndirectedCycle());		
+	}
+
+	@Test
+	public void testGetUndirCycle() {
+		GraphInterface grafo = new UndirectedGraph("1");
+		DFS dfsTest = new DFS(grafo);
+		assertTrue(dfsTest.getUndirCycle() == null);
+		
+		grafo = new UndirectedGraph("3;0 1;1 2;2 0");
+		dfsTest = new DFS(grafo);
+		assertEquals(3,dfsTest.getUndirCycle().size());
+	}
+
 }
