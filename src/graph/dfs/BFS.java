@@ -12,8 +12,11 @@ public class BFS {
 	private ArrayList<Integer> coda;
 	boolean[] scoperti;
 	private ArrayList<Integer> risultato;
+	private ArrayList<Integer> risultatoConps;
 	private int[] order;
 	private ArrayList<ArrayList<Integer>> conComps;
+	private int[] padre;
+	private ArrayList<Integer> cammino;
 	
 	public BFS(GraphInterface g) {
 		// inizializzo l'array degli scoperti
@@ -117,19 +120,13 @@ public class BFS {
 	private boolean discovered(int elem) {
 		return scoperti[elem];
 	}
-/*
+
 	private void initPadre(int sorg) {
 		reInit();
-		
-		padre = new int[graph.getOrder()];
-		for(int i = 0;i<graph.getOrder();i++) {
-			padre[i] = -1;
-		}
-
+	
 		coda.add(sorg);
 		scoperti[sorg] = true;
-		risultato.add(sorg);
-		
+		risultato.add(sorg);	
 		
 		while(!coda.isEmpty()) {
 			int tmp = coda.remove(0);
@@ -143,7 +140,31 @@ public class BFS {
 			}
 		}		
 	}
-*/
+	public ArrayList<Edge> getShortestPath(int sorg, int dest){
+		reInit();
+		initPadre(sorg);
+		
+		if(existPath(sorg,dest)) {
+			cammino.add(0, sorg);
+			ArrayList<Edge> path = new ArrayList<Edge>(cammino.size());
+			for(int i = 0;i<cammino.size()-1;i++) {
+				path.add(new Edge(cammino.get(i),cammino.get(i+1)));
+			}
+			return path;
+		}
+		else return null;
+	}
+	
+	private boolean existPath(int sorg, int dest) {
+		while(dest!=-1 && dest != sorg) {
+			cammino.add(0, dest);
+			dest = padre[dest];
+		}
+		if(dest == -1) return false;
+		assert(dest == sorg);
+		return true;
+	}
+
 	public ArrayList<ArrayList<Integer>> getConnectedComponent() {
 		reInit();
 		for(int i = 0;i < graph.getOrder();i++) {
@@ -153,7 +174,46 @@ public class BFS {
 		}
 		return conComps;
 	}
+	
+	public ArrayList<Integer> getNodesInOrderOfVisitGeneralGraph(){
+		reInit();
+		for(int i = 0;i < graph.getOrder();i++) {
+			if(scoperti[i] == false) {
+				getNodesInOrderOfVisitComponentGeneralGraph(i);
+			}
+		}
+		return risultatoConps;		
+	}
 
+	public void getNodesInOrderOfVisitComponentGeneralGraph(int sorgente){
+		reInitComp();
+		coda.add(sorgente);
+		scoperti[sorgente] = true;
+		risultatoConps.add(sorgente);
+		
+		
+		while(!coda.isEmpty()) {
+			int tmp = coda.remove(0);
+			for(Integer e:graph.getNeighbors(tmp)) {
+				if(!discovered(e.intValue())) {
+					coda.add(e);
+					scoperti[e] = true;
+					risultatoConps.add(e);
+				}
+			}
+		}
+	}
+	public int getNumberOfConnectedComponents() {
+		reInit();
+		int cont = 0;
+		for(int i = 0;i < graph.getOrder();i++) {
+			if(scoperti[i] == false) {
+				cont++;
+				getNodesInOrderOfVisitComponentGeneralGraph(i);
+			}
+		}
+		return cont;				
+	}	
 	private void reInitComp() {
 		risultato = new ArrayList<Integer>(graph.getOrder());
 		coda = new ArrayList<Integer>(graph.getOrder());
@@ -164,6 +224,12 @@ public class BFS {
 		for(int i = 0;i<graph.getOrder();i++) {
 			scoperti[i] = false;
 		}
+		padre = new int[graph.getOrder()];
+		for(int i = 0;i<graph.getOrder();i++) {
+			padre[i] = -1;
+		}
+		cammino = new ArrayList<Integer>(graph.getOrder());
+		risultatoConps = new ArrayList<Integer>(graph.getOrder());
 		conComps = new ArrayList<ArrayList<Integer>>(graph.getOrder());
 		order = new int[graph.getOrder()];
 		risultato = new ArrayList<Integer>(graph.getOrder());

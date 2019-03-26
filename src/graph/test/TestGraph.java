@@ -269,4 +269,51 @@ public class TestGraph {
 		assertEquals(3,dfsTest.getUndirCycle().size());
 	}
 
+	@Test
+	public void testPath() {
+		GraphInterface grafo = new UndirectedGraph("2");
+		BFS bfsTest = new BFS(grafo);
+		assertTrue(bfsTest.getShortestPath(0, 1) == null);
+		
+		grafo = new UndirectedGraph("2;0 1");
+		bfsTest = new BFS(grafo);
+		assertTrue(bfsTest.getShortestPath(0, 1) != null &&
+				bfsTest.getShortestPath(0, 1).size() == 1);
+		
+		grafo = new UndirectedGraph("4;0 1;2 3");
+		bfsTest = new BFS(grafo);
+		assertTrue(bfsTest.getShortestPath(0, 3) == null);
+
+		grafo = new UndirectedGraph("4;0 1;1 2;2 3");
+		bfsTest = new BFS(grafo);
+		assertTrue(bfsTest.getShortestPath(0, 3) != null &&
+				   bfsTest.getShortestPath(0, 3).size() == 3);
+		
+	}
+	
+	@Test
+	public void testVisitGeneralraph() {
+		GraphInterface grafo = new UndirectedGraph("2");
+		BFS bfsTest = new BFS(grafo);
+		assertTrue(bfsTest.getNodesInOrderOfVisitGeneralGraph().size() == 2);		
+
+		grafo = new DirectedGraph("4;0 3;2 1");
+		bfsTest = new BFS(grafo);
+		assertTrue(bfsTest.getNodesInOrderOfVisitGeneralGraph().size() == 4);
+		
+		System.out.println(bfsTest.getNodesInOrderOfVisitGeneralGraph().toString());
+		
+	}
+	
+	@Test
+	public void returnNumberConComps() {
+		GraphInterface grafo = new UndirectedGraph("2");
+		BFS bfsTest = new BFS(grafo);
+		assertTrue(bfsTest.getNumberOfConnectedComponents() == 2);		
+
+		grafo = new UndirectedGraph("2;0 1");
+		bfsTest = new BFS(grafo);
+		assertTrue(bfsTest.getNumberOfConnectedComponents() == 1);
+		
+	}
 }
