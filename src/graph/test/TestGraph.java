@@ -316,4 +316,27 @@ public class TestGraph {
 		assertTrue(bfsTest.getNumberOfConnectedComponents() == 1);
 		
 	}
+	
+	@Test
+	public void testGetOrderVisitGeneral() {
+		GraphInterface grafo = new UndirectedGraph("2");
+		BFS bfsTest = new BFS(grafo);
+		int[] order = bfsTest.getOrderOfVisitGeneralGraphCycle();
+		assertTrue(order[0] == 0 && order[1] == 0);		
+		
+		grafo = new UndirectedGraph("2;0 1");
+		bfsTest = new BFS(grafo);
+		order = bfsTest.getOrderOfVisitGeneralGraphCycle();
+		assertTrue(order[0] == 0 && order[1] == 1);
+		
+		grafo = new DirectedGraph("3;2 1;1 0");
+		bfsTest = new BFS(grafo);
+		order = bfsTest.getOrderOfVisitGeneralGraphCycle();
+		assertTrue(order[0] == 0 && order[1] == 0 && order[2] == 0);
+
+		grafo = new DirectedGraph("3;0 1;1 2");
+		bfsTest = new BFS(grafo);
+		order = bfsTest.getOrderOfVisitGeneralGraphCycle();
+		assertTrue(order[0] == 0 && order[1] == 1 && order[2] == 2);		
+	}
 }

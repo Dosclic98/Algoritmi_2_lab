@@ -116,6 +116,38 @@ public class BFS {
 		}
 		return order;
 	}
+	public int[] getOrderOfVisitGeneralGraphCycle() {
+		reInit();
+		for(int i = 0;i < graph.getOrder();i++) {
+			if(scoperti[i] == false) {
+				getOrderOfVisitGeneralGraph(i);
+			}
+		}
+		return order;
+	}
+	
+	public void getOrderOfVisitGeneralGraph(int sorgente){
+		reInitComp();
+		
+		coda.add(sorgente);
+		scoperti[sorgente] = true;
+		risultato.add(sorgente);
+		order[sorgente] = 0;
+		int cur = 0;
+		
+		while(!coda.isEmpty()) {
+			int tmp = coda.remove(0);
+			for(Integer e:graph.getNeighbors(tmp)) {
+				if(!discovered(e.intValue())) {
+					coda.add(e);
+					scoperti[e] = true;
+					risultato.add(e);
+					order[e] = cur + 1;
+					cur++;
+				}
+			}
+		}
+	}
 	
 	private boolean discovered(int elem) {
 		return scoperti[elem];
