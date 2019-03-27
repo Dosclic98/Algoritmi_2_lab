@@ -181,7 +181,7 @@ public class TestGraph {
 		dfsTest = new DFS(grafo);
 		assertTrue(dfsTest.hasDirCycle());		
 		
-		grafo = new DirectedGraph("5;2 3;3 4;4 2;4 1;4 0");
+		grafo = new DirectedGraph("6;4 3;4 1;1 3;3 0;3 2;0 1;2 0;0 5;2 5");
 		dfsTest = new DFS(grafo);
 		assertTrue(dfsTest.hasDirCycle());		
 		

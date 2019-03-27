@@ -187,6 +187,7 @@ public class DFS {
 				lastVisited = sorg;
 				arcInd = e;
 				cycle = true;
+				return true;
 			}
 		}
 		terminati[sorg] = true;
@@ -206,6 +207,8 @@ public class DFS {
 				lastVisited = sorg;
 				arcInd = e;
 				cycle = true;
+				terminati[sorg] = true;
+				return true;
 			}
 		}
 		terminati[sorg] = true;
