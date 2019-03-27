@@ -14,6 +14,10 @@ public class DFS {
 	private ArrayList<Integer> risultato;
 	private ArrayList<Integer> finiti;
 	private int[] padre;
+	private int[] orderOfVisitArr;
+	private int[] orderPostVisitArr;
+	private int orderOfVisit;
+	private int orderPostVisit;
 	int lastVisited;
 	int arcInd;
 
@@ -25,6 +29,9 @@ public class DFS {
 	}
 	
 	private void dfsVisit(int sorg) {
+		orderOfVisitArr[sorg] = orderOfVisit;
+		orderOfVisit++;
+		
 		scoperti[sorg] = true;
 		risultato.add(sorg);
 		for(Integer e:graph.getNeighbors(sorg)) {
@@ -33,6 +40,8 @@ public class DFS {
 				dfsVisit(e);
 			}
 		}
+		orderPostVisitArr[sorg] = orderPostVisit;
+		orderPostVisit++;
 		finiti.add(sorg);
 	}
 	
@@ -54,7 +63,7 @@ public class DFS {
 			if(!scoperti[i]) throw new NotAllNodesReachedException(); 
 		}
 		return finiti;
-	} 
+	} 	
 	
 	public GraphInterface getForest() throws NotAllNodesReachedException{
 		reInit();
@@ -75,11 +84,43 @@ public class DFS {
 		dfsVisit(sorg);
 		return risultato;
 	} 
+
+	public ArrayList<Integer> getNodesInOrderOfVisit(){
+		reInit();
+		for(int i = 0;i < graph.getOrder();i++) {
+			if(!discovered(i)) dfsVisit(i);
+		}
+		return risultato;
+	}
+	
+	public int[] getOrderOfVisit() {
+		reInit();
+		for(int i = 0;i < graph.getOrder();i++) {
+			if(!discovered(i)) dfsVisit(i);
+		}
+		return orderOfVisitArr;		
+	}
+
+	public int[] getOrderPostVisit() {
+		reInit();
+		for(int i = 0;i < graph.getOrder();i++) {
+			if(!discovered(i)) dfsVisit(i);
+		}
+		return orderPostVisitArr;		
+	}
+	
+	public ArrayList<Integer> getNodesInOrderPostVisit(){
+		reInit();
+		for(int i = 0;i < graph.getOrder();i++) {
+			if(!discovered(i)) dfsVisit(i);
+		}
+		return finiti;
+	} 
 	
 	private boolean discovered(int elem) {
 		return scoperti[elem];
 	}
-	
+		
 	private void reInit() {
 		scoperti = new boolean[graph.getOrder()];
 		for(int i = 0;i<graph.getOrder();i++) {
@@ -93,7 +134,10 @@ public class DFS {
 		for(int i = 0;i<graph.getOrder();i++) {
 			padre[i] = -1;
 		}
-		
+		orderOfVisit = 0;
+		orderPostVisit = 0;
+		orderOfVisitArr = new int[graph.getOrder()];
+		orderPostVisitArr = new int[graph.getOrder()];
 		finiti = new ArrayList<Integer>(graph.getOrder());
 		risultato = new ArrayList<Integer>(graph.getOrder());
 		tree = graph.create();

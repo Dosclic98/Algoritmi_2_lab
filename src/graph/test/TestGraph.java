@@ -339,4 +339,66 @@ public class TestGraph {
 		order = bfsTest.getOrderOfVisitGeneralGraphCycle();
 		assertTrue(order[0] == 0 && order[1] == 1 && order[2] == 2);		
 	}
+	
+	@Test
+	public void testBFSTree() {
+		GraphInterface graph = new UndirectedGraph("2;0 1");
+		BFS bfsTest = new BFS(graph);
+		assertTrue(bfsTest.getBFSForest().hasEdge(0, 1));
+		
+		graph = new UndirectedGraph("2");
+		bfsTest = new BFS(graph);
+		assertFalse(bfsTest.getBFSForest().hasEdge(0, 1));
+
+		graph = new UndirectedGraph("4;0 1;2 3");
+		bfsTest = new BFS(graph);
+		assertTrue(bfsTest.getBFSForest().hasEdge(0, 1));
+		assertTrue(bfsTest.getBFSForest().hasEdge(2, 3));
+		assertFalse(bfsTest.getBFSForest().hasEdge(0, 2));
+		assertFalse(bfsTest.getBFSForest().hasEdge(3, 1));
+	}
+	
+	@Test
+	public void testOrderOfVisitDFSGeneral() {
+		GraphInterface graph = new UndirectedGraph("2");
+		DFS dfsTest = new DFS(graph);
+		assertTrue(dfsTest.getNodesInOrderOfVisit().size() == 2);
+		assertTrue(dfsTest.getNodesInOrderOfVisit().get(0) == 0);
+		assertTrue(dfsTest.getNodesInOrderOfVisit().get(1) == 1);
+	}
+	
+	@Test
+	public void testOrderPostVisitDFSGeneral() {
+		GraphInterface graph = new UndirectedGraph("2;0 1");
+		DFS dfsTest = new DFS(graph);
+		assertTrue(dfsTest.getNodesInOrderPostVisit().size() == 2);
+		assertTrue(dfsTest.getNodesInOrderPostVisit().get(0) == 1);
+		assertTrue(dfsTest.getNodesInOrderPostVisit().get(1) == 0);
+		
+		graph = new UndirectedGraph("2");
+		dfsTest = new DFS(graph);
+		assertTrue(dfsTest.getNodesInOrderPostVisit().size() == 2);
+		assertTrue(dfsTest.getNodesInOrderPostVisit().get(0) == 0);
+		assertTrue(dfsTest.getNodesInOrderPostVisit().get(1) == 1);
+		
+	}
+	
+	@Test
+	public void testGetOrderOfVisit() {
+		GraphInterface graph = new UndirectedGraph("2");
+		DFS dfsTest = new DFS(graph);
+		int[] arrOrd = dfsTest.getOrderOfVisit();
+		assertEquals(0,arrOrd[0]);
+		assertEquals(1,arrOrd[1]);
+	}
+
+	@Test
+	public void testGetOrderPostVisit() {
+		GraphInterface graph = new UndirectedGraph("2;0 1");
+		DFS dfsTest = new DFS(graph);
+		int[] arrOrdPost = dfsTest.getOrderPostVisit();
+		assertEquals(1,arrOrdPost[0]);
+		assertEquals(0,arrOrdPost[1]);
+	}
+	
 }
