@@ -414,4 +414,17 @@ public class TestGraph {
 		assertEquals(2,ordineTop.get(3).intValue());
 	}
 	
+	@Test
+	public void testOrdTopDefinition() {
+		GraphInterface graph = new DirectedGraph("5; 0 1; 1 2;1 3; 2 4; 3 4");
+		DFS dfsTest = new DFS(graph);
+		ArrayList<Integer> topOrder = dfsTest.topologicalOrder();
+		System.out.println(topOrder);
+		for(int u = 0;u < topOrder.size();u++) {
+			for(int v = u+1;v < topOrder.size();v++) {
+				assertFalse(graph.hasEdge(v, u));
+			}
+		}
+	}
+	
 }

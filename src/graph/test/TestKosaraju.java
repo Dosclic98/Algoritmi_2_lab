@@ -3,12 +3,14 @@ package graph.test;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.junit.Test;
 
 
 import graph.dfs.Kosaraju;
 import it.uniupo.graphLib.DirectedGraph;
+import it.uniupo.graphLib.GraphUtils;
 
 public class TestKosaraju {
 
@@ -62,9 +64,40 @@ public class TestKosaraju {
 		assertEquals(1,scc[3]);
 		assertEquals(1,scc[4]);
 		System.out.println(scc[0] + " " + scc[1] + " " + scc[2] + " " + scc[3] + " " + scc[4]);
-		
-		
 	}
 	
-
+	@Test
+	public void testSCCTrasp() {
+		DirectedGraph graph1 = new DirectedGraph("4; 0 1; 1 2; 2 3; 3 0");
+		DirectedGraph graph2 = GraphUtils.reverseGraph(graph1);
+		
+		Kosaraju kosarajuTest1 = new Kosaraju(graph1);
+		int[] scc1 = kosarajuTest1.getSCC();
+		Kosaraju kosarajuTest2 = new Kosaraju(graph2);
+		int[] scc2 = kosarajuTest2.getSCC();
+		
+		assertEquals(scc1[0],scc2[0]);
+		assertEquals(scc1[1],scc2[1]);
+		assertEquals(scc1[2],scc2[2]);
+		assertEquals(scc1[3],scc2[3]);
+		
+	}
+	// Non ha molto senso ma nel dubbio l'ho fatto
+	@Test
+	public void testOrdTop() {
+		DirectedGraph graph = new DirectedGraph("5; 0 1; 1 2;1 3; 2 4; 3 4");
+		Kosaraju kosarajuTest = new Kosaraju(graph);
+		kosarajuTest.getSCC();
+		ArrayList<Integer> topOrder = kosarajuTest.orderPostVisit;
+		System.out.println(topOrder);
+		// inverto e ottengo l'ordine topologico
+		Collections.reverse(topOrder);
+		System.out.println(topOrder);
+		for(int u = 0;u < topOrder.size();u++) {
+			for(int v = u+1;v < topOrder.size();v++) {
+				assertFalse(graph.hasEdge(v, u));
+			}
+		}
+	}
+	
 }

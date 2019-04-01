@@ -9,7 +9,8 @@ public class Kosaraju {
 	
 	private boolean[] scoperti;
 	private DirectedGraph graph;
-	ArrayList<Integer> orderPostVisit;
+	// public per testing
+	public ArrayList<Integer> orderPostVisit;
 	private int[] scc;
 	private int sccCount;
 	
