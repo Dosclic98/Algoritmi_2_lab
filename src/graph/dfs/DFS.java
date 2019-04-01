@@ -13,6 +13,7 @@ public class DFS {
 	boolean[] terminati;
 	private ArrayList<Integer> risultato;
 	private ArrayList<Integer> finiti;
+	private ArrayList<Integer> ordineTop;
 	private int[] padre;
 	private int[] orderOfVisitArr;
 	private int[] orderPostVisitArr;
@@ -134,6 +135,7 @@ public class DFS {
 		for(int i = 0;i<graph.getOrder();i++) {
 			padre[i] = -1;
 		}
+		ordineTop = new ArrayList<Integer>(graph.getOrder());
 		orderOfVisit = 0;
 		orderPostVisit = 0;
 		orderOfVisitArr = new int[graph.getOrder()];
@@ -269,5 +271,26 @@ public class DFS {
 		}
 		return true;
 		
+	}
+	public ArrayList<Integer> topologicalOrder(){
+		reInit();
+		
+		for(int i = 0;i<graph.getOrder();i++) {
+			if(scoperti[i] == false) dfsVisitTopOrder(i);
+		}
+		return ordineTop;
+		
+	}
+
+	private void dfsVisitTopOrder(int sorg) {		
+		scoperti[sorg] = true;
+		risultato.add(sorg);
+		
+		for(Integer e:graph.getNeighbors(sorg)) {
+			if(!discovered(e.intValue())) {
+				dfsVisitTopOrder(e);
+			}
+		}
+		ordineTop.add(0, sorg);;
 	}
 }

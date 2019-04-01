@@ -401,4 +401,17 @@ public class TestGraph {
 		assertEquals(0,arrOrdPost[1]);
 	}
 	
+	@Test
+	public void testOrdTop() {
+		GraphInterface graph = new DirectedGraph("4;0 2;1 2;1 0;3 0;3 1");
+		DFS dfsTest = new DFS(graph);
+		ArrayList<Integer> ordineTop = dfsTest.topologicalOrder();
+		assertTrue(ordineTop.size() == 4);
+		assertEquals(3,ordineTop.get(0).intValue());
+		System.out.println(ordineTop);
+		assertEquals(1,ordineTop.get(1).intValue());
+		assertEquals(0,ordineTop.get(2).intValue());
+		assertEquals(2,ordineTop.get(3).intValue());
+	}
+	
 }
