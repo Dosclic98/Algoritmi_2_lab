@@ -40,6 +40,24 @@ public class Kosaraju {
 		}		
 	}
 	
+	public boolean startReached(int start, int end) {
+		reInit();
+		return isReached(start,end);
+	}
+	
+	public boolean isReached(int start, int end) {
+		scoperti[start] = true;
+		boolean cycle = false;
+		for(Integer e:graph.getNeighbors(start)) {
+			if(e == end) return true;
+			if(scoperti[e] == false) {
+				cycle = isReached(e,end);
+				if(cycle) return true;
+			}
+		}		
+		return false;
+	}
+	
 	private void dfsVisitPostOrder(int sorg) {
 		scoperti[sorg] = true;
 		
@@ -69,7 +87,27 @@ public class Kosaraju {
 		}
 		return scc;
 		
-	}	
+	}
+	
+	public int getOrdMaxSCC() {
+		int scc[] = getSCC();
+		int sccNum[] = new int[graph.getOrder() + 1];
+		// inizializzo i valori sccNum a 0
+		for(int j = 0;j < sccNum.length;j++) sccNum[j] = 0;
+		
+		// calcolo quanti scc[i] ho così da avere l ordine di ogni 
+		// componente connessa
+		for(int i = 0;i<scc.length;i++) {
+			sccNum[scc[i]]++;
+		}
+		
+		// Trovo la componente cnnessa maggiore
+		int max = -1;
+		for(int k = 1;k < sccNum.length;k++) {
+			if(sccNum[k] > max) max = sccNum[k];
+		}
+		return max;
+	}
 	
 	public void reInitIn() {
 		scoperti = new boolean[graph.getOrder()];
@@ -84,5 +122,4 @@ public class Kosaraju {
 		scoperti = new boolean[graph.getOrder()];
 		for(int i = 0;i < graph.getOrder();i++) scoperti[i] = false;
 	}
-	// Da fare test e teoria
 }

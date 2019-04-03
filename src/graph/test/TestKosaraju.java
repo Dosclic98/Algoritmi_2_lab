@@ -100,4 +100,58 @@ public class TestKosaraju {
 		}
 	}
 	
+	@Test
+	public void testIsReached() {
+		DirectedGraph graph = new DirectedGraph("3;0 1;1 2;2 1");
+		Kosaraju kosarajuTest = new Kosaraju(graph);
+		assertTrue(kosarajuTest.startReached(0, 1));
+		assertTrue(kosarajuTest.startReached(0, 2));
+		assertFalse(kosarajuTest.startReached(1, 0));
+		assertFalse(kosarajuTest.startReached(2, 0));
+		
+		graph = new DirectedGraph("4;0 1;2 3;3 2");
+		kosarajuTest = new Kosaraju(graph);
+		assertTrue(kosarajuTest.startReached(0, 1));
+		assertFalse(kosarajuTest.startReached(0, 2));
+		assertFalse(kosarajuTest.startReached(1, 3));
+		assertTrue(kosarajuTest.startReached(2, 3));
+		assertTrue(kosarajuTest.startReached(3, 2));
+	}
+	
+	@Test
+	public void testTrueSCC() {
+		DirectedGraph graph = new DirectedGraph("5;0 2;2 0;4 0;1 2;1 4;4 3;3 1");
+		Kosaraju kosarajuTest = new Kosaraju(graph);
+		int[] scc = kosarajuTest.getSCC();
+		assertEquals(2,scc[0]);
+		assertEquals(1,scc[1]);
+		assertEquals(2,scc[2]);
+		assertEquals(1,scc[3]);
+		assertEquals(1,scc[4]);
+		// System.out.println(scc[0] + " lol" + scc[1] + " " + scc[2] + " " + scc[3] + " " + scc[4]);
+		for(int i = 0;i<scc.length;i++) {
+			for(int j = 0;j<scc.length;j++) {
+				if(i != j && scc[i] == scc[j]) {
+					assertTrue(kosarajuTest.startReached(i, j));
+				}
+				else if(i != j && scc[i] != scc[j]) {
+					assertFalse(kosarajuTest.startReached(i, j) && kosarajuTest.startReached(j, i));
+				}
+			}
+		}
+	}
+	
+	@Test
+	public void testOrderOfMaxSCC() {
+		DirectedGraph graph = new DirectedGraph("5;0 2;2 0;4 0;1 2;1 4;4 3;3 1");
+		Kosaraju kosarajuTest = new Kosaraju(graph);
+		int[] scc = kosarajuTest.getSCC();
+		assertEquals(2,scc[0]);
+		assertEquals(1,scc[1]);
+		assertEquals(2,scc[2]);
+		assertEquals(1,scc[3]);
+		assertEquals(1,scc[4]);
+
+		assertEquals(3,kosarajuTest.getOrdMaxSCC());
+	}
 }

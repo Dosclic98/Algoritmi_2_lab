@@ -427,4 +427,18 @@ public class TestGraph {
 		}
 	}
 	
+	@Test
+	public void testIsDag() {
+		GraphInterface graph = new DirectedGraph("5; 0 1; 1 2;1 3; 2 4; 3 4");
+		DFS dfsTest = new DFS(graph);
+		dfsTest.topologicalOrder();		
+	}
+
+	@Test (expected = IllegalArgumentException.class)
+	public void testIsDagExc() {
+		GraphInterface graph = new DirectedGraph("5; 0 1; 1 2;1 3;3 0; 2 4; 3 4");
+		DFS dfsTest = new DFS(graph);
+		dfsTest.topologicalOrder();		
+	}
+	
 }

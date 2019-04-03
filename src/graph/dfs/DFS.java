@@ -272,9 +272,10 @@ public class DFS {
 		return true;
 		
 	}
+	
 	public ArrayList<Integer> topologicalOrder(){
+		if(!isDag()) throw new IllegalArgumentException();
 		reInit();
-		
 		for(int i = 0;i<graph.getOrder();i++) {
 			if(scoperti[i] == false) dfsVisitTopOrder(i);
 		}
@@ -292,5 +293,15 @@ public class DFS {
 			}
 		}
 		ordineTop.add(0, sorg);;
+	}
+	
+	private boolean isDag() {
+		reInit();
+		boolean cycle = false;
+		for(int i = 0;i<graph.getOrder();i++) {
+			if(scoperti[i] == false) cycle = dfsVisitCycle(i);
+			if(cycle) return false;
+		}
+		return true;
 	}
 }
