@@ -54,6 +54,14 @@ public class TestVoli {
 		assertEquals(-1,scali);
 		
 	}
+
+	@Test (expected = IllegalArgumentException.class)
+	public void testScaliExc() {
+		DirectedGraph graph = new DirectedGraph("3;0 1 3;0 2 6;1 2 1");
+		Voli testVoli = new Voli(graph);
+		testVoli.scali(-1, 2);
+		fail();		
+	}
 	
 	@Test
 	public void testTempoMinimo() {
@@ -69,8 +77,17 @@ public class TestVoli {
 		
 	}
 	
+	@Test (expected = IllegalArgumentException.class)
+	public void testTempoMinimoExc() {
+		DirectedGraph graph = new DirectedGraph("3;0 1 3;0 2 6;1 2 1");
+		Voli testVoli = new Voli(graph);
+		testVoli.tempoMinimo(-1, 2);
+		fail();
+	}
+	
+	
 	@Test
-	public void testPercTempoMinimo() {
+	public void testPercorsoTempoMinimo() {
 		DirectedGraph graph = new DirectedGraph("3;0 1 3;0 2 6;1 2 1");
 		Voli testVoli = new Voli(graph);
 		ArrayList<Edge> percTempMin = testVoli.trattaVeloce(0, 2);
@@ -90,7 +107,7 @@ public class TestVoli {
 	}
 
 	@Test
-	public void testPercScaliMinimo() {
+	public void testPercorsoScaliMinimo() {
 		DirectedGraph graph = new DirectedGraph("3;0 1 3;0 2 6;1 2 1");
 		Voli testVoli = new Voli(graph);
 		ArrayList<Integer> percScaliMin = testVoli.percorsoScali(0, 2);
