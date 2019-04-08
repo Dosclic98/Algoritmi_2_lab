@@ -39,7 +39,8 @@ public class Voli {
 				if(scoperti[w] == false) {
 					coda.add(w);
 					scoperti[w] = true;
-					d[w] = d[u] + e.getWeight(); 
+					d[w] = d[u] + e.getWeight();
+					padri[w] = u;
 				}
 			}			
 		}
@@ -76,6 +77,10 @@ public class Voli {
 	}
 	
 	public int tempoMinimo(int partenza, int destinazione) {
+		if(partenza < 0 || destinazione < 0 || 
+				partenza >= graph.getOrder() || destinazione >= graph.getOrder()) {
+			throw new IllegalArgumentException();
+		}
 		reInit();
 		
 		scoperti[partenza] = true;
@@ -95,6 +100,7 @@ public class Voli {
 			if(scoperti[w] == false) {
 				scoperti[w] = true;
 				d[w] = d[u] + tmp.getWeight();
+				padri[w] = u;
 				for(Edge z:graph.getOutEdges(w)) {
 					if(scoperti[z.getHead()] == false) {
 						heap.add(z, d[w] + z.getWeight());
@@ -106,6 +112,28 @@ public class Voli {
 	}
 	
 	public ArrayList<Edge> trattaVeloce (int sorgente, int destinazione){
+		tempoMinimo(sorgente,destinazione);
+		int tmp = destinazione;
+		ArrayList<Edge> perc = new ArrayList<Edge>();
+		while(padri[tmp]!=-1) {
+			perc.add(0, new Edge(padri[tmp],tmp));
+			tmp = padri[tmp];
+		}
+		if(tmp == sorgente) return perc;
+		else return null;
+	}
+	
+	public ArrayList<Integer> percorsoScali(int sorgente, int destinazione){
+		tempo(sorgente,destinazione);
+		int tmp = destinazione;
+		ArrayList<Integer> perc = new ArrayList<Integer>();
+		while(padri[tmp]!=-1) {
+			perc.add(0, tmp);
+			tmp = padri[tmp];
+		}
+		perc.add(0,tmp);
+		if(tmp == sorgente) return perc;
+		else return null;
 		
 	}
 	
@@ -125,7 +153,6 @@ public class Voli {
 		for(int i = 0;i<graph.getOrder();i++) {
 			padri[i] = -1;
 		}
-		
 		
 	}
 	
