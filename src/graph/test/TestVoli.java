@@ -111,8 +111,7 @@ public class TestVoli {
 		DirectedGraph graph = new DirectedGraph("3;0 1 3;0 2 6;1 2 1");
 		Voli testVoli = new Voli(graph);
 		ArrayList<Integer> percScaliMin = testVoli.percorsoScali(0, 2);
-		assertEquals(2,percScaliMin.size());
-		assertEquals(0,percScaliMin.get(0).intValue());
+		assertEquals(0,percScaliMin.size());
 		
 		graph = new DirectedGraph("3;0 1 3");
 		testVoli = new Voli(graph);
@@ -120,10 +119,14 @@ public class TestVoli {
 		assertTrue(percScaliMin == null);
 		
 		graph = new DirectedGraph("1");
-		percScaliMin = testVoli.percorsoScali(0, 0);
 		testVoli = new Voli(graph);
+		percScaliMin = testVoli.percorsoScali(0, 0);
+		assertEquals(0,percScaliMin.size());
+
+		graph = new DirectedGraph("4; 2 1 1; 1 0 4; 2 3 2; 1 3 3;3 0 2");
+		testVoli = new Voli(graph);
+		percScaliMin = testVoli.percorsoScali(2,0);
 		assertEquals(1,percScaliMin.size());
-		assertEquals(0,percScaliMin.get(0).intValue());
-	}
+		assertEquals(1,percScaliMin.get(0).intValue());	}
 	
 }

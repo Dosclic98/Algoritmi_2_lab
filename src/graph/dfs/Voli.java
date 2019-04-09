@@ -128,10 +128,10 @@ public class Voli {
 		int tmp = destinazione;
 		ArrayList<Integer> perc = new ArrayList<Integer>();
 		while(padri[tmp]!=-1) {
-			perc.add(0, tmp);
+			if(tmp != destinazione) perc.add(0, tmp);
 			tmp = padri[tmp];
 		}
-		perc.add(0,tmp);
+		//perc.add(0,tmp);
 		if(tmp == sorgente) return perc;
 		else return null;
 		
