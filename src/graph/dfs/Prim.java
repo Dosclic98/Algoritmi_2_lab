@@ -1,10 +1,8 @@
 package graph.dfs;
 
 import it.uniupo.graphLib.Edge;
-import it.uniupo.graphLib.GraphInterface;
 import it.uniupo.graphLib.UndirectedGraph;
 
-import java.util.ArrayList;
 
 import it.uniupo.algoTools.MinHeap;
 

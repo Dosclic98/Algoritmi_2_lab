@@ -1,5 +1,6 @@
 package graph.test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -33,8 +34,8 @@ public class TestAllacciamentoIdrico {
 		assertTrue(!allId.progettoComune().hasEdge(2,3));
 		assertTrue(allId.progettoProprietari().hasEdge(2,3));
 		assertTrue(!allId.progettoProprietari().hasEdge(0,3));
-		/*assertEquals(2,allId.speseExtraComune());
-		assertEquals(3,allId.speseExtraProprietario(3));*/
+		assertEquals(2,allId.speseExtraComune());
+		assertEquals(3,allId.speseExtraProprietario(3));
 	}
 
 }
