@@ -150,6 +150,8 @@ public class AllacciamentoIdrico {
 	}
 	
 	public int speseExtraProprietario(int villetta) {
+		if(villetta < 0 || villetta >= graph.getOrder()) throw new IllegalArgumentException();
+		
 		padri = new int[graph.getOrder()];
 		for(int i = 0;i<graph.getOrder();i++) {
 			padri[i] = -1;

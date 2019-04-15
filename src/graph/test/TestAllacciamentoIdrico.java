@@ -37,5 +37,15 @@ public class TestAllacciamentoIdrico {
 		assertEquals(2,allId.speseExtraComune());
 		assertEquals(3,allId.speseExtraProprietario(3));
 	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testExc() {
+		UndirectedGraph mappa = new UndirectedGraph("4;1 2 2;1 0 5;2 3 3; 0 3 1");
+		int[][] costoScavo = {{0,6,-1,8},{6,0,7,-1},{-1,7,0,10},{8,-1,10,0}};
+		int costoTubo = 3;
+		int puntoAll = 1;
+		allId = new AllacciamentoIdrico(mappa, costoScavo, costoTubo,puntoAll);
 
+		assertEquals(3,allId.speseExtraProprietario(-1));
+	}
 }
