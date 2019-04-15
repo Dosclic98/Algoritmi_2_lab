@@ -31,9 +31,9 @@ public class TestAllacciamentoIdrico {
 		allId = new AllacciamentoIdrico(mappa, costoScavo, costoTubo,puntoAll);
 		assertTrue(allId.progettoComune().hasEdge(0,3));
 		assertTrue(!allId.progettoComune().hasEdge(2,3));
-		/*assertTrue(allId.progettoProprietari().hasEdge(2,3));
+		assertTrue(allId.progettoProprietari().hasEdge(2,3));
 		assertTrue(!allId.progettoProprietari().hasEdge(0,3));
-		assertEquals(2,allId.speseExtraComune());
+		/*assertEquals(2,allId.speseExtraComune());
 		assertEquals(3,allId.speseExtraProprietario(3));*/
 	}
 

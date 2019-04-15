@@ -12,15 +12,16 @@ public class AllacciamentoIdrico {
 	
 	private boolean[] scoperti;
 	private int[] d;
-	private UndirectedGraph tree;
-	private int[] padri;	
+	private UndirectedGraph treeProprietari;
+	private UndirectedGraph treeComune;
+	private int[] padri;
 	
 	public AllacciamentoIdrico (UndirectedGraph mappa, int[][] costoScavo,
 								int costoTubo, int puntoAllacciamento) {
 		graph = mappa;
 		this.costoScavo = costoScavo;
 		this.costoTubo = costoTubo;
-		this.puntoAllacciamento = puntoAllacciamento; 
+		this.puntoAllacciamento = puntoAllacciamento;
 		reInit();
 	}
 	
@@ -40,7 +41,7 @@ public class AllacciamentoIdrico {
 			
 			if(scoperti[w] == false) {
 				scoperti[w] = true;
-				tree.addEdge(tmp);
+				treeComune.addEdge(tmp);
 				for(Edge add:graph.getOutEdges(w)) {
 					int v = add.getHead();
 					if(scoperti[v] == false) {
@@ -49,13 +50,47 @@ public class AllacciamentoIdrico {
 				}
 			}
 		}
-		return tree;		
+		return treeComune;		
 	}
 	
-	public UndirectedGraph progettoProprietari() {
+	public UndirectedGraph progettoProprietari() {		
+		singoloProgettoProprietari(puntoAllacciamento);
 		
+		return treeProprietari;
 	}
-	
+
+	private void singoloProgettoProprietari(int partenza) {
+		if(partenza < 0 || partenza >= graph.getOrder()) {
+			throw new IllegalArgumentException();
+		}
+		reInit();
+		
+		scoperti[partenza] = true;
+		d[partenza] = 0;
+		
+		MinHeap<Edge,Integer> heap = new MinHeap<Edge,Integer>();
+		
+		for(Edge e:graph.getOutEdges(partenza)) {
+			heap.add(e, (d[partenza] + e.getWeight())*costoTubo);
+		}
+		
+		while(!heap.isEmpty()) {
+			Edge tmp = heap.extractMin();
+			int u = tmp.getTail();
+			int w = tmp.getHead();
+			
+			if(scoperti[w] == false) {
+				scoperti[w] = true;
+				d[w] = (d[u] + tmp.getWeight())*costoTubo;
+				treeProprietari.addEdge(tmp);
+				for(Edge z:graph.getOutEdges(w)) {
+					if(scoperti[z.getHead()] == false) {
+						heap.add(z, (d[w] + z.getWeight())*costoTubo);
+					}
+				}
+			}
+		}	
+	}
 	public void reInit() {
 		scoperti = new boolean[graph.getOrder()];
 		for(int i = 0;i<graph.getOrder();i++) {
@@ -71,6 +106,7 @@ public class AllacciamentoIdrico {
 			padri[i] = -1;
 		}
 		Integer inp = graph.getOrder();
-		tree = new UndirectedGraph(inp.toString());		
+		treeProprietari = new UndirectedGraph(inp.toString());		
+		treeComune = new UndirectedGraph(inp.toString());
 	}
 }
