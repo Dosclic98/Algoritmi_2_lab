@@ -25,7 +25,7 @@ public class TestClustering {
 		
 	}
 
-	@Test
+	@Test 
 	public void testSameCluster() {
 		UndirectedGraph g = new UndirectedGraph("4;0 3 7;0 1 2;1 2 2;2 3 1");
 		Clustering cl = new Clustering(g, 2);
