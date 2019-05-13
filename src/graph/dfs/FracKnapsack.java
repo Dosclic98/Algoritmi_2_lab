@@ -36,7 +36,7 @@ public class FracKnapsack {
 				spazioRimasto -= volume[tmp];
 			}
 			else {
-				dose[tmp] = spazioRimasto / volume[tmp];
+				dose[tmp] = (double) spazioRimasto / (double) volume[tmp];
 				quant[tmp] = spazioRimasto;
 				
 				valTot += value[tmp] * dose[tmp];
