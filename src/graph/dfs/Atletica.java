@@ -8,6 +8,8 @@ public class Atletica {
 	}
 	
 	public int scelta(int[] rendAtleta1, int[] rendAtleta2) {
+		if(rendAtleta1.length != numDisc || rendAtleta2.length != numDisc) throw new IllegalArgumentException();
+		
 		int[] arrSol1 = new int[rendAtleta1.length];
 		int[] arrSol2 = new int[rendAtleta2.length];
 		arrSol1[0] = rendAtleta1[0];
