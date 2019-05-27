@@ -51,8 +51,10 @@ public class BellmanFord {
 					m++;
 				}
 				if(min == null) L[i][v] = L[i-1][v];
-				else L[i][v] = Math.min(L[i-1][v], L[i-1][min.getHead()] + min.getWeight());
-				// da aggiungere costruzone di from
+				else {
+					L[i][v] = Math.min(L[i-1][v], L[i-1][min.getHead()] + min.getWeight());
+					if(L[i][v] == (L[i-1][min.getHead()] + min.getWeight()) ) from[v] = min.getHead();
+				}
 			}
 		}
 	}
@@ -76,7 +78,23 @@ public class BellmanFord {
 	}
 	
 	public ArrayList<Integer> getPath(int u) {		
-		BellFord();
+		if(hasNegCycle()) return null;
 		
+		ArrayList<Integer> path = new ArrayList<Integer>();
+		BellFord();
+		if(from[u] == -1)  {
+			path.add(-1);
+			return path;
+		}
+		else {
+			int ultimo = u;
+			path.add(0, u);
+			while(ultimo != sorg) {
+				ultimo = from[ultimo];
+				path.add(0, ultimo);
+			}
+			
+			return path;
+		}
 	}
 }

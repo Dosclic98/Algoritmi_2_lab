@@ -283,7 +283,7 @@ public class DFS {
 		
 	}
 
-	private void dfsVisitTopOrder(int sorg) {		
+	public void dfsVisitTopOrder(int sorg) {		
 		scoperti[sorg] = true;
 		risultato.add(sorg);
 		
