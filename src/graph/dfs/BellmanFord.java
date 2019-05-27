@@ -1,5 +1,7 @@
 package graph.dfs;
 
+import java.util.ArrayList;
+
 import it.uniupo.graphLib.DirectedGraph;
 import it.uniupo.graphLib.Edge;
 import it.uniupo.graphLib.GraphUtils;
@@ -8,7 +10,7 @@ public class BellmanFord {
 	DirectedGraph graph;
 	int sorg;
 	Double[][] L;
-	
+	int[] from;
 	
 	public BellmanFord(DirectedGraph g, int sorgente) {
 		graph = g;
@@ -18,6 +20,10 @@ public class BellmanFord {
 	private void BellFord() {
 		L = new Double[graph.getOrder() + 1][graph.getOrder()];
 		DirectedGraph trasp = GraphUtils.reverseGraph(graph);
+		from = new int[graph.getOrder()];
+		for(int i = 0; i < graph.getOrder(); i++) {
+			from[i] = -1;
+		}
 		int n = graph.getOrder();
 		for(int v = 0; v < n; v++) {
 			L[0][v] = Double.POSITIVE_INFINITY;
@@ -46,7 +52,7 @@ public class BellmanFord {
 				}
 				if(min == null) L[i][v] = L[i-1][v];
 				else L[i][v] = Math.min(L[i-1][v], L[i-1][min.getHead()] + min.getWeight());
-				
+				// da aggiungere costruzone di from
 			}
 		}
 	}
@@ -69,5 +75,8 @@ public class BellmanFord {
 		return false;
 	}
 	
-	public ArrayList<Integer> getPath
+	public ArrayList<Integer> getPath(int u) {		
+		BellFord();
+		
+	}
 }
